@@ -36,7 +36,7 @@ export function borrowedItems(user) {
     .catch(errors => console.log(errors));
 }
 
-export function newItem() {
+export function newItem(newItem) {
     return fetch(`http://localhost:3001/items/`, {
             method: 'POST',
             headers: {

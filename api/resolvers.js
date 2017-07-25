@@ -48,7 +48,7 @@ const resolveFunctions = {
                 available: true,
                 borrower: null
             }
-            return json.newItem()
+            return json.newItem(newItem)
         // return fetch(`http://localhost:3001/items/`, {
         //     method: 'POST',
         //     headers: {
