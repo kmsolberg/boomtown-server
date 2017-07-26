@@ -56,22 +56,10 @@ const resolveFunctions = {
             }
             return json.newItem(newItem)
         },
-        addUser(root, args) {
-            return psql.createUser(args) 
+        addUser(root, args, context) {
+            return psql.createUser(args, context) 
         }
     }
 };
-
-// pool.query('SELECT NOW() as now', (err, res) => {
-//   if (err) {
-//     console.log(err.stack)
-//   } else {
-//     console.log(res.rows[0])
-//   }
-// })
-
-// pool.query('SELECT NOW() as now')
-//   .then(res => console.log(res.rows[0]))
-//   .catch(e => console.error(e.stack))
 
 export default resolveFunctions;

@@ -38,8 +38,7 @@ export function getItems() {
     })
 }
 
-export function createUser(args) {
-
+export function createUser(args, context) {
     return new Promise(async (resolve, reject)=> {
         try {
             let fbUser = await admin.auth().createUser({
@@ -52,6 +51,7 @@ export function createUser(args) {
             }
             let pgUser = await pool.query(query)
             let user = {...pgUser.rows[0], email: fbUser.email, id: fbUser.uid}
+            context.response.set('Firebase-Token', context.token)
             resolve(user)
         } catch (error) {
             reject(error)
