@@ -1,4 +1,5 @@
 import pool from '../database/index';
+import admin from '../database/firebase';
 
 export function getUsers() {
     return pool.query(`SELECT * FROM user_profiles`)
@@ -8,15 +9,17 @@ export function getUsers() {
     .catch(errors => console.log(errors))
 }
 
-
 export function getUsersProfile(id) {
-    return pool.query(`SELECT * FROM user_profiles WHERE userid='${id}'`)
-    .then(response => {
-    //    return response.rows[0]
-        return renameID(response.rows)[0]
-    })
-    .catch(errors =>{
-        console.log(errors)
+    return new Promise(async (resolve, reject)=> {
+        try {
+            let userPostgres = await pool.query(`SELECT * FROM user_profiles WHERE userid='${id}'`)
+            const userFB = await admin.auth().getUser(id)
+            userPostgres = renameID(userPostgres.rows)[0];
+            userPostgres = {...userPostgres, email: userFB.email};
+            resolve(userPostgres);
+        } catch (error) {
+            reject(error);
+        }
     })
 }
 
@@ -26,4 +29,32 @@ function renameID(rows) {
         delete acc.userid;
         return acc
     }), {})
+}
+
+export function getItems() {
+    return pool.query(`SELECT * FROM items`)
+    .then(response => {
+        return response.rows
+    })
+}
+
+export function createUser(args) {
+
+    return new Promise(async (resolve, reject)=> {
+        try {
+            let fbUser = await admin.auth().createUser({
+                email: args.email,
+                password: args.password
+            })
+            const query = {
+                text: 'INSERT INTO user_profiles(fullname, bio, userid) VALUES($1, $2, $3) RETURNING *',
+                values: [args.fullname, args.bio, fbUser.uid],
+            }
+            let pgUser = await pool.query(query)
+            let user = {...pgUser.rows[0], email: fbUser.email, id: fbUser.uid}
+            resolve(user)
+        } catch (error) {
+            reject(error)
+        }
+    })
 }
