@@ -1,12 +1,12 @@
 import fetch from 'node-fetch';
 import * as json from './jsonServer';
 import pool from '../database/index';
-import * as psql from './postgres';
+import * as postgres from './postgres';
 
 const resolveFunctions = {
     Query: {
         users() {
-            return psql.getUsers();
+            return postgres.getUsers();
             // return json.getUsers();
         },
         user(root, {id}, context) {
@@ -14,7 +14,7 @@ const resolveFunctions = {
             // return json.getUser(id);
         },
         items() {
-            return psql.getItems()
+            return postgres.getItems()
             // return json.getItems()
         },
         item(root, { id }, context) {
@@ -57,7 +57,7 @@ const resolveFunctions = {
             return json.newItem(newItem)
         },
         addUser(root, args, context) {
-            return psql.createUser(args, context) 
+            return postgres.createUser(args, context) 
         }
     }
 };

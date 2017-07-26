@@ -51,7 +51,6 @@ export function createUser(args, context) {
             }
             let pgUser = await pool.query(query)
             let user = {...pgUser.rows[0], email: fbUser.email, id: fbUser.uid}
-            context.response.set('Firebase-Token', context.token)
             resolve(user)
         } catch (error) {
             reject(error)
