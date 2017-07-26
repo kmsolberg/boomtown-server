@@ -1,5 +1,6 @@
 import DataLoader from 'dataloader';
-import { getUserOwnedItems, borrowedItems, getUser, getItem } from './jsonServer';
+import { getUserOwnedItems, borrowedItems, getItem } from './jsonServer';
+import { getUsersProfile } from './postgres';
 
 export default function() {
     return {
@@ -10,7 +11,7 @@ export default function() {
             Promise.all(ids.map(id => borrowedItems(id)))
         )),
         IndividualUser: new DataLoader(ids => (
-            Promise.all(ids.map(id => getUser(id)))
+            Promise.all(ids.map(id => getUsersProfile(id)))
         )),
         IndividualItem: new DataLoader(ids => (
             Promise.all(ids.map(id => getItem(id)))

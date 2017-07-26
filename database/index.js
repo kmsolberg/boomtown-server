@@ -1,6 +1,6 @@
-import { pool } from 'pg';
+import { Pool } from 'pg';
 
-const pool = new pool({
+const pool = new Pool({
     host: 'localhost',
     user: 'boomtowndemo',
     max: 20,

@@ -1,13 +1,17 @@
 import fetch from 'node-fetch';
 import * as json from './jsonServer';
+import pool from '../database/index';
+import { getUsersProfile, getUsers } from './postgres'
 
 const resolveFunctions = {
     Query: {
         users() {
-            return json.getUsers();
+            return getUsers();
+            // return json.getUsers();
         },
         user(root, {id}, context) {
-            return context.loaders.IndividualUser.load(id)
+            return context.loaders.IndividualUser.load(id);
+            // return json.getUser(id);
         },
         items() {
             return json.getItems()
@@ -49,18 +53,20 @@ const resolveFunctions = {
                 borrower: null
             }
             return json.newItem(newItem)
-        // return fetch(`http://localhost:3001/items/`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(newItem)
-        // })
-        // .then(response => response.json())
-        // .catch(errors => console.log(errors));
-        // return addItem;
         }
     }
 };
+
+// pool.query('SELECT NOW() as now', (err, res) => {
+//   if (err) {
+//     console.log(err.stack)
+//   } else {
+//     console.log(res.rows[0])
+//   }
+// })
+
+// pool.query('SELECT NOW() as now')
+//   .then(res => console.log(res.rows[0]))
+//   .catch(e => console.error(e.stack))
 
 export default resolveFunctions;

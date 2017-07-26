@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import { } from 'dotenv/config';
 import { 
   graphqlExpress, 
   graphiqlExpress 
