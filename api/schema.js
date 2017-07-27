@@ -5,11 +5,11 @@ import resolvers from './resolvers';
 const typeDefs = `
     
     type Item {
-        itemid: ID!
+        id: ID!
         title: String!
         description: String!
         imageurl: String
-        tags: [String!]
+        tags: [Tag!]
         itemOwner: User!
         createdOn: Int
         available: Boolean!
@@ -25,18 +25,26 @@ const typeDefs = `
         borrowed: [Item]
     }
 
+    type Tag {
+        id: ID!
+        title: String!
+        items: [Item]
+    }
+
     type Query {
         users: [User]
         user(id: ID!): User
         items: [Item]
         item(id:ID!): Item
+        tags: [Tag]
+        tag(id: ID!): Tag
     }
 
     type Mutation {
         addItem (
             title: String!
             imageurl: String
-            itemOwner: ID!
+            itemowner: ID!
             description: String!
             tags: [String!]
         ) : Item

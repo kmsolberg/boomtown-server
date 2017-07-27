@@ -36,6 +36,7 @@ export function getItems() {
     .then(response => {
         return response.rows
     })
+    .catch(errors => console.log(errors))    
 }
 
 export function getItem(id) {
@@ -43,6 +44,7 @@ export function getItem(id) {
     .then(response => {
         return response.rows
     })
+    .catch(errors => console.log(errors))    
 }
 
 export function getItemOwner(id) {
@@ -69,6 +71,40 @@ export function borrowedItems(id) {
     .catch(errors => console.log(errors))
 }
 
+export function getTags() {
+    return pool.query(`SELECT * FROM tags`)
+    .then(response => {
+        return response.rows
+    })
+    .catch(errors => console.log(errors))    
+}
+
+export function getItemTags(id) {
+    return pool.query(`
+        SELECT * from tags
+        INNER JOIN itemtags
+        ON tags.id = itemtags.tagid
+        WHERE itemtags.itemid = ${id}
+    `)
+    .then(response => {
+        return response.rows
+    })
+    .catch(errors => console.log(errors))
+}
+
+export function getAllTaggedItems(id) {
+    return pool.query(`
+        SELECT * FROM items
+        INNER JOIN itemtags
+        ON items.id = itemtags.itemid
+        where itemtags.tagid = ${id}
+    `)
+    .then(response => {
+        return response.rows
+    })
+    .catch(errors => console.log(errors))
+}
+
 export function createUser(args, context) {
     return new Promise(async (resolve, reject)=> {
         try {
@@ -87,4 +123,13 @@ export function createUser(args, context) {
             reject(error)
         }
     })
+}
+
+export function newItem(args, context) {
+    const query = {
+            text: 'INSERT INTO items(title, description, imageurl, itemowner) VALUES($1, $2, $3, $4) RETURNING *',
+            values: [args.title, args.imageurl, args.itemowner, args.description],
+        }
+    pool.query(query)
+    .catch(errors => console.log(errors))
 }
