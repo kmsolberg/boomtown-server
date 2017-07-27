@@ -7,15 +7,12 @@ const resolveFunctions = {
     Query: {
         users() {
             return postgres.getUsers();
-            // return json.getUsers();
         },
         user(root, {id}, context) {
             return context.loaders.IndividualUser.load(id);
-            // return json.getUser(id);
         },
         items() {
             return postgres.getItems()
-            // return json.getItems()
         },
         item(root, { id }, context) {
             return context.loaders.IndividualItem.load(id)
@@ -24,18 +21,17 @@ const resolveFunctions = {
     
     Item: {
         itemOwner(item, args, context) {
-            return context.loaders.IndividualUser.load(item.itemowner)
-            // return json.getUser(item.itemOwner)
+            return postgres.getUsersProfile(item.itemowner)
         },
-        borrower(item) {
+        borrower(item, args, context) {
             if (!item.borrower) return null
-            return json.getUser(item.borrower)
+            return postgres.getUsersProfile(item.borrower)
         }
     },
 
     User: {
         items: (user, args, context) => {
-            return context.loaders.UserOwnedItems.load(user);
+            return context.loaders.UserOwnedItems.load(user.id);
         },
         borrowed: (user, args, context) => {
             return context.loaders.BorrowedItems.load(user);

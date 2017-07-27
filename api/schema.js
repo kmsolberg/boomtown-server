@@ -5,10 +5,10 @@ import resolvers from './resolvers';
 const typeDefs = `
     
     type Item {
-        id: ID!
+        itemid: ID!
         title: String!
         description: String!
-        imageUrl: String
+        imageurl: String
         tags: [String!]
         itemOwner: User!
         createdOn: Int
@@ -35,7 +35,7 @@ const typeDefs = `
     type Mutation {
         addItem (
             title: String!
-            imageUrl: String
+            imageurl: String
             itemOwner: ID!
             description: String!
             tags: [String!]

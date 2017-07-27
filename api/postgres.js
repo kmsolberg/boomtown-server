@@ -38,6 +38,37 @@ export function getItems() {
     })
 }
 
+export function getItem(id) {
+    return pool.query(`SELECT * FROM items`)
+    .then(response => {
+        return response.rows
+    })
+}
+
+export function getItemOwner(id) {
+    return pool.query(`SELECT * FROM users WHERE userid='${id}'`)
+    .then(response => {
+        return renameID(response.rows)[0];
+    })
+    .catch(errors => console.log(errors))
+}
+
+export function getUserOwnedItems(id) {
+    return pool.query(`SELECT * FROM items WHERE itemowner='${id}'`)
+    .then(response => {
+        return renameID(response.rows);
+    })
+    .catch(errors => console.log(errors))
+}
+
+export function borrowedItems(id) {
+    return pool.query(`SELECT * FROM items WHERE borrowerid='${id}'`)
+    .then(response => {
+        return renameID(response.rows);
+    })
+    .catch(errors => console.log(errors))
+}
+
 export function createUser(args, context) {
     return new Promise(async (resolve, reject)=> {
         try {
