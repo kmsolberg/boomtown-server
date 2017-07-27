@@ -126,10 +126,25 @@ export function createUser(args, context) {
 }
 
 export function newItem(args, context) {
-    const query = {
-            text: 'INSERT INTO items(title, description, imageurl, itemowner) VALUES($1, $2, $3, $4) RETURNING *',
-            values: [args.title, args.imageurl, args.itemowner, args.description],
+    return new Promise(async (resolve, reject) => {
+        try {
+            const itemQuery = {
+                text: 'INSERT INTO items(title, description, imageurl, itemowner) VALUES($1, $2, $3, $4) RETURNING *',
+                values: [args.title, args.description, args.imageurl, args.itemowner],
+            }
+            const newItem = await pool.query(itemQuery)
+            function insertTag(tags) {
+                return tags.map(tag => {
+                return `(${newItem.rows[0].id}, ${tag.id})`
+                }).join(',')
+            }
+            const tagQuery = {
+                text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)}`
+            }
+            const tags = await pool.query(tagQuery)
+            resolve({id: newItem.rows[0].id})
+        } catch (error) {
+            reject(error)
         }
-    pool.query(query)
-    .catch(errors => console.log(errors))
+    })
 }

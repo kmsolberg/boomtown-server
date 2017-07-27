@@ -28,7 +28,10 @@ const typeDefs = `
     type Tag {
         id: ID!
         title: String!
-        items: [Item]
+    }
+
+    input AssignedTag {
+        id: Int!
     }
 
     type Query {
@@ -46,7 +49,7 @@ const typeDefs = `
             imageurl: String
             itemowner: ID!
             description: String!
-            tags: [String!]
+            tags: [AssignedTag]!
         ) : Item
 
         addUser (

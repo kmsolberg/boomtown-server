@@ -47,17 +47,6 @@ const resolveFunctions = {
     Mutation: {
         addItem(root, args) {
             return postgres.newItem(args)
-            // const newItem = {
-            //     title: args.title,
-            //     imageUrl: args.imageUrl,
-            //     itemOwner: args.itemOwner,
-            //     description: args.description,
-            //     tags: args.tags,
-            //     createdOn: Math.floor(Date.now() / 1000),
-            //     available: true,
-            //     borrower: null
-            // }
-            // return json.newItem(newItem)
         },
         addUser(root, args, context) {
             return postgres.createUser(args, context) 
