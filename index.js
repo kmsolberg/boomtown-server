@@ -10,6 +10,7 @@ import schema from './api/schema'; // Next step!
 import createLoaders from './api/loaders';
 import cors from 'cors';
 import admin from './database/firebase';
+import firebaseAuthMiddleware from './api/middleware';
 
 const app = express();
 
@@ -18,6 +19,8 @@ const GQL_PORT = 4500;
 app.use('*', cors());
 
 app.use(bodyParser.json())
+
+app.use('/graphiql', firebaseAuthMiddleware)
 
 app.use('/graphql', graphqlExpress(function(req, res) {
   return { 

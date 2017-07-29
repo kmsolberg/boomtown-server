@@ -50,7 +50,7 @@ export function getItem(id) {
 export function getItemOwner(id) {
     return pool.query(`SELECT * FROM users WHERE userid='${id}'`)
     .then(response => {
-        return renameID(response.rows)[0];
+        return response.rows[0];
     })
     .catch(errors => console.log(errors))
 }
@@ -58,7 +58,7 @@ export function getItemOwner(id) {
 export function getUserOwnedItems(id) {
     return pool.query(`SELECT * FROM items WHERE itemowner='${id}'`)
     .then(response => {
-        return renameID(response.rows);
+        return response.rows;
     })
     .catch(errors => console.log(errors))
 }

@@ -23,7 +23,7 @@ const resolveFunctions = {
     },
     
     Item: {
-        itemOwner(item, args, context) {
+        itemowner(item, args, context) {
             return postgres.getUsersProfile(item.itemowner)
         },
         borrower(item, args, context) {
