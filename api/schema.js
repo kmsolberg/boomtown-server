@@ -23,6 +23,7 @@ const typeDefs = `
         bio: String
         items: [Item]
         borrowed: [Item]
+        password: String
     }
 
     type Tag {
@@ -31,7 +32,7 @@ const typeDefs = `
     }
 
     input AssignedTag {
-        id: Int!
+        id: [Int]
     }
 
     type Query {
