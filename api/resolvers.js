@@ -40,7 +40,7 @@ const resolveFunctions = {
             return context.loaders.UserOwnedItems.load(user.id);
         },
         borrowed: (user, args, context) => {
-            return context.loaders.BorrowedItems.load(user);
+            return context.loaders.BorrowedItems.load(user.id);
         }
     },
 

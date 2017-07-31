@@ -64,7 +64,7 @@ export function getUserOwnedItems(id) {
 }
 
 export function borrowedItems(id) {
-    return pool.query(`SELECT * FROM items WHERE borrowerid='${id}'`)
+    return pool.query(`SELECT * FROM items WHERE borrower='${id}'`)
     .then(response => {
         return renameID(response.rows);
     })
