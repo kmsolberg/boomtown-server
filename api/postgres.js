@@ -139,10 +139,10 @@ export function newItem(args, context) {
                 }).join(',')
             }
             const tagQuery = {
-                text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)}`
+                text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)} RETURNING *`
             }
             const tags = await pool.query(tagQuery)
-            resolve({id: newItem.rows[0].id})
+            resolve(newItem.rows[0])
         } catch (error) {
             reject(error)
         }
